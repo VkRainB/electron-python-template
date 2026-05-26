@@ -4,7 +4,7 @@ export default defineConfig({
   lang: 'zh-CN',
   title: 'Electron + Vue + Python',
   description: '三端通信脚手架的完整介绍：Electron 主进程、Vue 渲染端、Python 后端',
-  base: '/',
+  base: '/electron-python-template/',
   lastUpdated: true,
   cleanUrls: true,
 
