@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@/*": ["web/src/*"]
+    }
+  },
+  "include": [
+    "web/src/**/*.js",
+    "web/src/**/*.jsx",
+    "web/src/**/*.vue",
+    "web/src/**/*.ts",
+    "web/src/**/*.tsx",
+    "web/types/**/*.d.ts",
+    "*.js",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "out",
+    "resources",
+    "dist",
+    "electron",
+    "build",
+    "temp"
+  ]
+}

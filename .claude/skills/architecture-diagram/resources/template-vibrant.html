@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[PROJECT NAME] Architecture Diagram</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      /* Vibrant Flat Icon Theme */
+      --bg-primary: #ffffff;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f9fafb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --border: #d1d5db;
+
+      /* Semantic Arrow Colors */
+      --flow-a: #2563eb;  /* Blue - Main */
+      --flow-b: #dc2626;  /* Red - Alt */
+      --flow-c: #16a34a;  /* Green - Data */
+      --flow-d: #9333ea;  /* Purple - Async */
+
+      /* Icon Accent Backgrounds */
+      --tint-blue: #eff6ff;
+      --tint-blue-border: #bfdbfe;
+      --tint-red: #fef2f2;
+      --tint-red-border: #fee2e2;
+      --tint-green: #f0fdf4;
+      --tint-green-border: #dcfce7;
+      --tint-purple: #faf5ff;
+      --tint-purple-border: #ede9fe;
+      --tint-orange: #fff7ed;
+      --tint-orange-border: #fed7aa;
+      --tint-teal: #f0fdfa;
+      --tint-teal-border: #ccfbf1;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-primary);
+      min-height: 100vh;
+      padding: 2rem;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .icon-badge {
+      width: 40px;
+      height: 40px;
+      background: var(--tint-blue);
+      border: 1.5px solid var(--tint-blue-border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-badge svg {
+      width: 20px;
+      height: 20px;
+      color: var(--flow-a);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .diagram-container {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      padding: 1.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    svg {
+      width: 100%;
+      min-width: 900px;
+      display: block;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .card-icon.blue { background: var(--tint-blue); color: var(--flow-a); }
+    .card-icon.red { background: var(--tint-red); color: var(--flow-b); }
+    .card-icon.green { background: var(--tint-green); color: var(--flow-c); }
+    .card-icon.purple { background: var(--tint-purple); color: var(--flow-d); }
+
+    .card h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .card ul {
+      list-style: none;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+    }
+
+    .card li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .toolbar-toggle {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .toolbar-toggle:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+      border-color: var(--text-secondary);
+    }
+
+    .toolbar-actions {
+      display: none;
+      gap: 0.5rem;
+    }
+
+    .toolbar.expanded .toolbar-actions { display: flex; }
+
+    .toolbar-actions button {
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .toolbar-actions button:hover {
+      background: var(--flow-a);
+      color: white;
+      border-color: var(--flow-a);
+    }
+
+    @media print {
+      body { background: white; padding: 1rem; }
+      .toolbar { display: none !important; }
+      .card:hover { transform: none; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="report-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="icon-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+        </div>
+        <div>
+          <h1>[PROJECT NAME] Architecture</h1>
+          <p class="subtitle">[Subtitle description]</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-actions">
+          <button onclick="copyAsImage(this)">Copy</button>
+          <button onclick="downloadPNG(this)">PNG</button>
+          <button onclick="downloadPDF(this)">PDF</button>
+        </div>
+        <button class="toolbar-toggle" onclick="this.parentElement.classList.toggle('expanded')" title="Export options" aria-label="Export options">⋯</button>
+      </div>
+    </div>
+
+    <!-- Main Diagram -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 680">
+        <!-- Definitions -->
+        <defs>
+          <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+          </marker>
+          <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+          </marker>
+          <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+          </marker>
+          <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#9333ea"/>
+          </marker>
+        </defs>
+
+        <!-- Background -->
+        <rect width="100%" height="100%" fill="#ffffff"/>
+
+        <!-- =================================================================
+             COMPONENT EXAMPLES - Vibrant Flat Icon Style
+             ================================================================= -->
+
+        <!-- External/Generic Component -->
+        <rect x="30" y="280" width="100" height="50" rx="8" ry="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+        <text x="80" y="300" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">Users</text>
+        <text x="80" y="318" fill="#6b7280" font-size="12" text-anchor="middle">Browser/Mobile</text>
+
+        <!-- Security Component (Red tint) -->
+        <rect x="30" y="80" width="100" height="60" rx="8" ry="8" fill="#fef2f2" stroke="#fee2e2" stroke-width="1.5"/>
+        <text x="80" y="105" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">Auth Provider</text>
+        <text x="80" y="123" fill="#6b7280" font-size="12" text-anchor="middle">OAuth 2.0</text>
+
+        <!-- Region/Cloud Boundary -->
+        <rect x="160" y="40" width="820" height="620" rx="12" ry="12" fill="rgba(37, 99, 235, 0.03)" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="172" y="58" fill="#2563eb" font-size="12" font-weight="600">AWS Region: us-west-2</text>
+
+        <!-- AWS/Cloud Service (Orange tint) -->
+        <rect x="200" y="280" width="110" height="50" rx="8" ry="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+        <text x="255" y="300" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">CloudFront</text>
+        <text x="255" y="318" fill="#6b7280" font-size="12" text-anchor="middle">CDN</text>
+
+        <!-- Multi-line AWS Component (S3 Buckets) -->
+        <rect x="200" y="380" width="110" height="100" rx="8" ry="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+        <text x="255" y="402" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">S3 Buckets</text>
+        <text x="255" y="422" fill="#6b7280" font-size="11" text-anchor="middle">• bucket-one</text>
+        <text x="255" y="438" fill="#6b7280" font-size="11" text-anchor="middle">• bucket-two</text>
+        <text x="255" y="454" fill="#6b7280" font-size="11" text-anchor="middle">• bucket-three</text>
+        <text x="255" y="472" fill="#ea580c" font-size="10" text-anchor="middle">OAI Protected</text>
+
+        <!-- Security Group (Red dashed) -->
+        <rect x="350" y="265" width="120" height="80" rx="8" ry="8" fill="transparent" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="358" y="279" fill="#dc2626" font-size="10">sg-name :port</text>
+
+        <!-- Component inside security group (Orange tint) -->
+        <rect x="360" y="280" width="100" height="50" rx="8" ry="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+        <text x="410" y="300" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">Load Balancer</text>
+        <text x="410" y="318" fill="#6b7280" font-size="12" text-anchor="middle">HTTPS :443</text>
+
+        <!-- Backend Component (Green tint) -->
+        <rect x="510" y="280" width="110" height="50" rx="8" ry="8" fill="#f0fdf4" stroke="#dcfce7" stroke-width="1.5"/>
+        <text x="565" y="300" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">API Server</text>
+        <text x="565" y="318" fill="#6b7280" font-size="12" text-anchor="middle">FastAPI :8000</text>
+
+        <!-- Database Component (Purple tint) -->
+        <rect x="700" y="280" width="120" height="50" rx="8" ry="8" fill="#faf5ff" stroke="#ede9fe" stroke-width="1.5"/>
+        <text x="760" y="300" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">Database</text>
+        <text x="760" y="318" fill="#6b7280" font-size="12" text-anchor="middle">PostgreSQL</text>
+
+        <!-- Frontend Component (Blue tint) -->
+        <rect x="200" y="520" width="200" height="110" rx="8" ry="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+        <text x="300" y="545" fill="#111827" font-size="14" font-weight="600" text-anchor="middle">Frontend</text>
+        <text x="300" y="565" fill="#6b7280" font-size="12" text-anchor="middle">React + TypeScript</text>
+        <text x="300" y="583" fill="#6b7280" font-size="12" text-anchor="middle">Additional detail</text>
+        <text x="300" y="601" fill="#6b7280" font-size="12" text-anchor="middle">More info</text>
+        <text x="300" y="621" fill="#2563eb" font-size="10" text-anchor="middle">domain.example.com</text>
+
+        <!-- =================================================================
+             ARROW EXAMPLES - Semantic Colors
+             ================================================================= -->
+
+        <!-- Flow A (Blue) - Main -->
+        <line x1="130" y1="305" x2="198" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+        <text x="164" y="297" fill="#6b7280" font-size="10" text-anchor="middle">HTTPS</text>
+
+        <!-- Flow A (Blue) - Simple -->
+        <line x1="310" y1="305" x2="358" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+
+        <!-- Flow C (Green) - Data -->
+        <line x1="255" y1="330" x2="255" y2="378" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+        <text x="270" y="358" fill="#6b7280" font-size="10">OAI</text>
+
+        <!-- Flow A (Blue) -->
+        <line x1="460" y1="305" x2="508" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+
+        <!-- Flow D (Purple) - Async -->
+        <line x1="620" y1="305" x2="698" y2="305" stroke="#9333ea" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+        <text x="655" y="297" fill="#6b7280" font-size="10">TLS</text>
+
+        <!-- Flow B (Red) - Auth -->
+        <path d="M 80 140 L 80 200 Q 80 220 100 220 L 200 220 Q 220 220 220 240 L 220 278" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,5"/>
+        <text x="150" y="210" fill="#dc2626" font-size="10">JWT + PKCE</text>
+
+        <!-- =================================================================
+             LEGEND
+             ================================================================= -->
+        <g transform="translate(720, 60)">
+          <text x="0" y="0" fill="#111827" font-size="12" font-weight="600">Legend</text>
+
+          <!-- Flow A -->
+          <line x1="0" y1="18" x2="24" y2="18" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+          <text x="30" y="22" fill="#6b7280" font-size="10">Main flow</text>
+
+          <!-- Flow B -->
+          <line x1="0" y1="36" x2="24" y2="36" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <text x="30" y="40" fill="#6b7280" font-size="10">Auth flow</text>
+
+          <!-- Flow C -->
+          <line x1="0" y1="54" x2="24" y2="54" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+          <text x="30" y="58" fill="#6b7280" font-size="10">Data flow</text>
+
+          <!-- Flow D -->
+          <line x1="0" y1="72" x2="24" y2="72" stroke="#9333ea" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+          <text x="30" y="76" fill="#6b7280" font-size="10">Async flow</text>
+
+          <!-- Components -->
+          <rect x="0" y="90" width="16" height="10" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+          <text x="22" y="98" fill="#6b7280" font-size="10">Frontend</text>
+
+          <rect x="0" y="106" width="16" height="10" rx="3" fill="#f0fdf4" stroke="#dcfce7" stroke-width="1"/>
+          <text x="22" y="114" fill="#6b7280" font-size="10">Backend</text>
+
+          <rect x="0" y="122" width="16" height="10" rx="3" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+          <text x="22" y="130" fill="#6b7280" font-size="10">Cloud</text>
+
+          <rect x="0" y="138" width="16" height="10" rx="3" fill="#faf5ff" stroke="#ede9fe" stroke-width="1"/>
+          <text x="22" y="146" fill="#6b7280" font-size="10">Database</text>
+
+          <rect x="0" y="154" width="16" height="10" rx="3" fill="#fef2f2" stroke="#fee2e2" stroke-width="1"/>
+          <text x="22" y="162" fill="#6b7280" font-size="10">Security</text>
+
+          <rect x="0" y="170" width="16" height="10" rx="3" fill="transparent" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="22" y="178" fill="#6b7280" font-size="10">Security Group</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon red">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>Security</h3>
+        </div>
+        <ul>
+          <li>OAuth 2.0 + PKCE</li>
+          <li>JWT token validation</li>
+          <li>Rate limiting</li>
+          <li>CORS configuration</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon orange">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
+          <h3>Performance</h3>
+        </div>
+        <ul>
+          <li>CDN caching</li>
+          <li>Database indexing</li>
+          <li>Connection pooling</li>
+          <li>Response compression</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon green">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h3>Monitoring</h3>
+        </div>
+        <ul>
+          <li>Health checks</li>
+          <li>Request tracing</li>
+          <li>Error logging</li>
+          <li>Metrics collection</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer">
+      [Project Name] • [Additional metadata]
+    </p>
+  </div>
+
+  <script>
+    async function copyAsImage(btn) {
+      const orig = btn.textContent;
+      try {
+        const el = document.getElementById('report-container');
+        const r = el.getBoundingClientRect();
+        const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#ffffff', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        btn.textContent = '✓ Copied!';
+      } catch (e) {
+        btn.textContent = '✗ Failed';
+      }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+
+    async function downloadPNG(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '⏳ ...';
+      try {
+        const el = document.getElementById('report-container');
+        const r = el.getBoundingClientRect();
+        const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#ffffff', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const link = document.createElement('a');
+        link.download = 'diagram.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        btn.textContent = '✓ Done!';
+      } catch (e) {
+        btn.textContent = '✗ Failed';
+      }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+
+    async function downloadPDF(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '⏳ ...';
+      try {
+        const el = document.getElementById('report-container');
+        const r = el.getBoundingClientRect();
+        const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#ffffff', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait';
+        const pdf = new jsPDF({ orientation, unit: 'px', format: [canvas.width, canvas.height], hotfixes: ['px_scaling'] });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save('diagram.pdf');
+        btn.textContent = '✓ Done!';
+      } catch (e) {
+        btn.textContent = '✗ Failed';
+      }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+  </script>
+</body>
+</html>

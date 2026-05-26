@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "paths": {
+      "@main/*": ["electron/main/*"],
+      "@preload/*": ["electron/preload/*"]
+    }
+  },
+  "include": [
+    "electron/main/**/*.js",
+    "electron/main/**/*.ts",
+    "electron/preload/**/*.js",
+    "electron/preload/**/*.ts",
+    "electron/shared/**/*.js",
+    "*.js",
+    "*.ts",
+    "*.cjs",
+    "*.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "out",
+    "resources",
+    "dist",
+    "web",
+    "build",
+    "temp"
+  ]
+}

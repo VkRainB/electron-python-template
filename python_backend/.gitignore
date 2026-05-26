@@ -1,0 +1,50 @@
+# Python 字节码与缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 虚拟环境
+venv/
+.venv/
+env/
+.env/
+
+# PyInstaller 输出
+build/
+dist/
+*.spec.bak
+
+# 打包/分发产物
+*.egg
+*.egg-info/
+.eggs/
+
+# 测试与覆盖率
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+
+# 类型检查 / Lint 缓存
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+# 配置与机密
+.env
+.env.*
+*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# 系统
+.DS_Store
+Thumbs.db

@@ -1,0 +1,22 @@
+{
+  "app": {
+    "id": "com.electron.app",
+    "name": "momo_py",
+    "productName": "创工坊",
+    "version": "0.1.1",
+    "description": "An Electron application with Vue",
+    "author": "example.com"
+  },
+  "backend": {
+    "binaryName": "mo_server",
+    "host": "127.0.0.1",
+    "defaultPort": 47821,
+    "portProbeRange": 50
+  },
+  "daemon": {
+    "dirName": {
+      "win32": "app_electron",
+      "unix": ".app_electron"
+    }
+  }
+}
